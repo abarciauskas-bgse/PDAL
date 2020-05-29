@@ -40,30 +40,30 @@
 #include <queue>
 #include <memory>
 #include <mutex>
+#include <set>
 #include <condition_variable>
 
+#include <pdal/JsonFwd.hpp>
 #include <pdal/Reader.hpp>
 #include <pdal/Streamable.hpp>
 #include <pdal/util/Bounds.hpp>
 
-#include "private/ept/Addon.hpp"
-#include "private/ept/Overlap.hpp"
-
 namespace pdal
 {
 
+class Addon;
 class Connector;
 class EptInfo;
 class Key;
+struct Overlap;
 class Pool;
 class TileContents;
+using AddonList = std::vector<Addon>;
+using Hierarchy = std::set<Overlap>;
 using StringMap = std::map<std::string, std::string>;
 
 class PDAL_DLL EptReader : public Reader, public Streamable
 {
-    FRIEND_TEST(EptReaderTest, getRemoteType);
-    FRIEND_TEST(EptReaderTest, getCoercedType);
-
 public:
     EptReader();
     virtual ~EptReader();
@@ -102,7 +102,7 @@ private:
     std::queue<TileContents, std::list<TileContents>> m_contents;
     uint64_t m_tileCount;
     std::unique_ptr<Hierarchy> m_hierarchy;
-    Hierarchy::const_iterator m_hierarchyIter;
+    std::unique_ptr<Hierarchy::const_iterator> m_hierarchyIter;
 
     struct Args;
     std::unique_ptr<Args> m_args;

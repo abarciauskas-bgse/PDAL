@@ -34,7 +34,7 @@
 
 #pragma once
 
-#include <unordered_set>
+#include <set>
 
 #include "Key.hpp"
 
@@ -53,15 +53,23 @@ struct Overlap
     point_count_t m_count;
     uint64_t m_nodeId;
 };
-using Hierarchy = std::unordered_set<Overlap>;
+using Hierarchy = std::set<Overlap>;
 
+inline bool operator<(const Overlap& a, const Overlap& b)
+{
+    return a.m_key < b.m_key;
+}
+
+/**
 inline bool operator==(const Overlap& a, const Overlap& b)
 {
     return a.m_key == b.m_key;
 }
+**/
 
 } // namespace pdal
 
+/**
 namespace std
 {
     template<>
@@ -73,4 +81,5 @@ namespace std
         }
     };
 }
+**/
 

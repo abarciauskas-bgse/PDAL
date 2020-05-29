@@ -34,8 +34,6 @@
 
 #pragma once
 
-#include <list>
-
 #include <pdal/Dimension.hpp>
 #include <pdal/DimType.hpp>
 #include <pdal/Log.hpp>

@@ -41,15 +41,17 @@
 #include <pdal/JsonFwd.hpp>
 #include <pdal/Writer.hpp>
 
-#include "private/ept/Addon.hpp"
-
 namespace pdal
 {
 
+class Addon;
 class Connector;
 class EptInfo;
 class Key;
+struct Overlap;
 class Pool;
+using AddonList = std::vector<Addon>;
+using Hierarchy = std::set<Overlap>;
 
 class PDAL_DLL EptAddonWriter : public Writer
 {

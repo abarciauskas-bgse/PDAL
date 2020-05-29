@@ -36,10 +36,13 @@
 
 #include <functional>  // for hash
 
+#include <pdal/pdal_types.hpp>
+#include <pdal/util/Bounds.hpp>
+
 namespace pdal
 {
 
-class PDAL_DLL Key
+class Key
 {
     // An EPT key representation (see https://git.io/fAiBh).  A depth/X/Y/Z key
     // representing a data node, as well as the bounds of the contained data.

@@ -32,8 +32,6 @@
 * OF SUCH DAMAGE.
 ****************************************************************************/
 
-#include "EptReader.hpp"
-
 #include <limits>
 
 #include <pdal/ArtifactManager.hpp>
@@ -46,8 +44,13 @@
 #include "private/ept/Connector.hpp"
 #include "private/ept/EptArtifact.hpp"
 #include "private/ept/EptSupport.hpp"
+#include "private/ept/Key.hpp"
+#include "private/ept/Overlap.hpp"
 #include "private/ept/Pool.hpp"
 #include "private/ept/TileContents.hpp"
+
+#include "EptReader.hpp"
+
 
 namespace pdal
 {
@@ -412,6 +415,7 @@ void EptReader::ready(PointTableRef table)
     m_pointIdDim = table.layout()->findDim("EptPointId");
 
     m_hierarchy.reset(new Hierarchy);
+    m_hierarchyIter.reset(new Hierarchy::const_iterator);
 
     // Determine all overlapping data files we'll need to fetch.
     try
@@ -451,10 +455,11 @@ void EptReader::ready(PointTableRef table)
     else
     {
         int count = 4;
-        m_hierarchyIter = m_hierarchy->cbegin();
-        while (m_hierarchyIter != m_hierarchy->cend() && count)
+        auto& it = *m_hierarchyIter;
+        it = m_hierarchy->cbegin();
+        while (it != m_hierarchy->cend() && count)
         {
-            load(*m_hierarchyIter++);
+            load(*it++);
             count--;
         }
     }
@@ -722,8 +727,9 @@ top:
                     new TileContents(std::move(m_contents.front())));
                 m_contents.pop();
                 l.unlock();
-                if (m_hierarchyIter != m_hierarchy->cend())
-                    load(*m_hierarchyIter++);
+                auto& it = *m_hierarchyIter;
+                if (it != m_hierarchy->cend())
+                    load(*it++);
                 break;
             }
             else
