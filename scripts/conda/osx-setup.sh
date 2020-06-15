@@ -1,11 +1,11 @@
-export CONDA_EXE=/Users/hobu/miniconda3/bin/conda
+export CONDA_EXE=~/miniconda3/bin/conda
 
 CONDA_ENV="pdal-build"
 
 $CONDA_EXE env remove -n $CONDA_ENV -y
 $CONDA_EXE config --add channels conda-forge
 $CONDA_EXE create --name $CONDA_ENV -y
-source /Users/hobu/miniconda3/bin/activate $CONDA_ENV
+source ~/miniconda3/bin/activate $CONDA_ENV
 $CONDA_EXE install  -y laz-perf \
                 laszip \
                 libunwind \
@@ -27,4 +27,4 @@ $CONDA_EXE install  -y laz-perf \
                 numpy \
                 tiledb
 
-activate $CONDA_ENV
+$CONDA_EXE activate $CONDA_ENV
